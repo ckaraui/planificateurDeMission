@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css" media='print' />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<script>
+	$(document).ready(function() {
+		/* initialize the external events
+		-----------------------------------------------------------------*/
+		$('#external-events .external-event').each(function() {
+			$(this).data('event', {
+				title: $.trim($(this).text()), // use the element's text as the event title
+				stick: true // maintain when user navigates (see docs on the renderEvent method)
+			});
+			// make the event draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      
+				revertDuration: 0  
+			});
+		});
+		/* initialize the calendar
+		-----------------------------------------------------------------*/
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			defaultDate: '2020-07-23',
+			editable: true,
+			droppable: true,
+			drop: function(date,draggedEl) {
+			                window.alert("the "+$(this).attr('id')+ " was dropped on date : "+date.format());
+							if ($('#drop-remove').is(':checked')) {
+								$(this).remove();}
+						         }
+					});
+
+		/*Calculate the number of events today
+		-----------------------------------------------------------------*/
+		$('#button1').click(function() {
+			  $('#calendar').fullCalendar('today');
+
+			  //TO DO
+			});
+
+		/*check if this day has an event before
+		--------------------------------------------------------------------*/
+		function ThisDateHasEvent(date) {
+			var allEvents = [];
+			allEvents = $('#calendar').fullCalendar('today');
+			var event = $.grep(allEvents, function (v) {
+				return +v.start === +date;
+			});
+			return event.length > 0;
+		}
+
+});
+</script>
+<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#script-warning {
+		display: none;
+		background: #eee;
+		border-bottom: 1px solid #ddd;
+		padding: 0 10px;
+		line-height: 40px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 12px;
+		color: red;
+	}
+
+	#loading {
+		display: none;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+
+	#calendar {
+		max-width: 700px;
+		margin: 0px auto;
+		display:inline-block;
+		padding:100px;
+		margin-left: 90px;
+		padding-top: 0px;
+	}
+	#button1 {
+	margin-left: 200px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding:20px;
+	}
+
+	#button2 {
+	margin-left: 120px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding:20px;
+	margin-left:230px;
+	padding-left: 20px;
+	}
+	form { display: inline; }
+
+	#external-events {
+		float: right;
+		width: 130px;
+		padding: 20px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: center;
+		display: inline-block;
+		margin: 90px;
+		padding-top: 0px;
+		margin-top: 20px;
+		}
+
+	#external-events h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+		}
+
+	.external-event { /* try to mimick the look of a real event */
+		margin: 10px 0;
+		background: #3366CC;
+		color: #fff;
+		font-size: .85em;
+		cursor: pointer;
+		}
+
+	#external-events p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+		}
+
+	#external-events p input {
+		margin: 0;
+		vertical-align: middle;
+		}
+
+</style>
+</head>
+<body>
+	<form>
+	  <input type="button" id="button1" value="NBR DE MISSION AUJOUD’HUI" method="POST">
+	</form>
+	<form>
+	  <input type="button" id="button2" value="NBR DE MISSION A VENIR" method="POST">
+	</form>
+	<div id="external-events">
+		<h4>Livreur</h4>
+		<div id ="liv1" class="external-event" draggable="True">Livreur 1</div>
+		<div id ="liv2" class="external-event" draggable="True">Livreur 2</div>
+		<div id ="liv3" class="external-event" draggable="True">Livreur 3</div>
+		<div id ="liv4" class="external-event" draggable="True">Livreur 4</div>
+		<div id ="liv5" class="external-event" draggable="True">Livreur 5</div>
+
+		<h4>Moto</h4>
+		<div id ="Moto1" class="external-event" draggable="True">Moto 1</div>
+		<div id ="Moto2" class="external-event" draggable="True">Moto 2</div>
+		<div id ="Moto3" class="external-event" draggable="True">Moto 3</div>
+		<div id ="Moto4" class="external-event" draggable="True">Moto 4</div>
+		<div id ="Moto5" class="external-event" draggable="True">Moto 5</div>
+
+		<h4>Adresse</h4>
+		<div id ="Addr1" class="external-event" draggable="True">Adresse 1</div>
+		<div id ="Addr2" class="external-event" draggable="True">Adresse 2</div>
+		<div id ="Addr3" class="external-event" draggable="True">Adresse 3</div>
+		<div id ="Addr4" class="external-event" draggable="True">Adresse 4</div>
+		<div id ="Addr5" class="external-event" draggable="True">Adresse 5</div>
+		<p>
+		<input type="checkbox" id="drop-remove"> <label for="drop-remove">remove after drop</label>
+		</p>
+	</div>
+    <div id="calendar"></div>
+
+</body>
+</html>
